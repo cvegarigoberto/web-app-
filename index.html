@@ -1,9 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>Focus</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </head>
 <body>
-	hola mundo
+	<div class="container-fluid">
+		hola mundo
+	</div>
 </body>
+<script>
+
+	$( document ).ready(function() {
+	    console.log( "ready!" );
+	    conectionApi();
+	    
+	});
+
+	function conectionApi(){
+		return $.ajax({
+		   type: 'POST',
+		   dataType: 'json',
+		   url: 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=orange',
+		   success: function(jsondata){
+		   	console.log(jsondata);
+		   }
+		})
+	}
+
+</script>
 </html>
