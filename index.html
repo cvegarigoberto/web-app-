@@ -29,8 +29,8 @@
 		</div>
 
 		<div class="container">
-			<div class="row">
-				<div class="col md-6">
+			<div id="principal_row" class="row">
+				<!-- <div class="col md-6">
 					<div class="card">
 						<img src="..." class="card-img-top" alt="...">
 						<div class="card-body">
@@ -53,7 +53,7 @@
 							Action here!
 						</div>
 					</div>
-				</div>
+				</div>-->
 			</div>
 		</div>
 	
@@ -61,22 +61,53 @@
 </body>
 <script>
 
+	var begin_data = '';
+
 	$( document ).ready(function() {
 	    console.log( "ready!" );
-	    conectionApi();
+	    begin_data = conectionApi('');
+
+	    begin_data.done(function(res_data){
+	    	//console.log(res_data);
+
+	    	$.each(res_data.drinks, function(i, val){
+	    		console.log(val);
+	    		$('#principal_row').append(cardHtml(val));
+	    	});
+	    });
 	    
 	});
 
-	function conectionApi(){
+	function conectionApi(json_data){
 		return $.ajax({
 		   type: 'POST',
 		   dataType: 'json',
+		   data:json_data,
 		   url: 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=orange',
-		   success: function(jsondata){
-		   	console.log(jsondata);
+		   success: function(res_data){
+		   	console.log(res_data);
 		   }
-		})
+		});
 	}
+
+	function cardHtml(obj){
+		return '<div class="col-sm-12 col-md-6" style="margin-bottom:2em;">'+
+					'<div class="card">'+
+						'<img src="'+obj.strDrinkThumb+'" class="card-img-top img-fluid img-thumbnail" alt="Drinks image">'+
+						'<div class="card-body">'+
+						   	'<h5 class="card-title">'+obj.strDrink+'</h5>'+
+						    '<p class="card-text text-truncate">'+obj.strInstructions+'</p>'+
+						'</div>'+
+						'<div class="card-footer">'+
+							'<button type="button" class="btn btn-danger btn-sm">'+obj.strAlcoholic+'</button>'+
+							'<button type="button" class="btn btn-success btn-sm">'+obj.strCategory+'</button>'+
+							'<button type="button" class="btn btn-primary btn-sm float-end">View</button>'+
+						'</div>'+
+					'</div>'+	
+				'</div>';
+	}
+
+
 
 </script>
 </html>
