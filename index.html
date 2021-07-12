@@ -9,7 +9,7 @@
 <body>
 	<div class="container-fluid">
 		
-		<nav class="navbar navbar-light bg-light">
+		<nav class="navbar navbar-light bg-light fixed-top">
 		  <div class="container-fluid">
 		    <a class="navbar-brand" href="#">
 		      <img src="images/focus_image.jpg" alt="" width="30" height="24" class="d-inline-block align-text-top">
@@ -29,6 +29,11 @@
 		</div>
 
 		<div class="container">
+			<div  class="d-flex justify-content-center">
+			  <div id="principal_load" class="spinner-border" role="status">
+			    <span class="visually-hidden">Loading...</span>
+			  </div>
+			</div>
 			<div id="principal_row" class="row">
 				<!-- <div class="col md-6">
 					<div class="card">
@@ -66,7 +71,12 @@
 		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		      </div>
 		      <div class="modal-body">
-		      		<div class="card">
+			      	<div  class="d-flex justify-content-center">
+					  <div id="modal_load" class="spinner-border" role="status">
+					    <span class="visually-hidden">Loading...</span>
+					  </div>
+					</div>
+		      		<div id="modal_card" class="card">
 					  <img id="img_desc" src="" class="card-img-top">
 					  <div class="card-body">
 					    <h5 id="title_desc" class="card-title"></h5>
@@ -85,7 +95,7 @@
 		  </div>
 		</div>
 
-		<div class="toast-container fixed-top right"> 
+		<div class="toast-container fixed-top"> 
 				<div id="confirmation_t" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
 				  <div class="toast-header">
 				    <strong class="me-auto">Good Job</strong>
@@ -134,6 +144,7 @@
 	    	$.each(res_data.drinks, function(i, val){
 	    		console.log(val);
 	    		$('#principal_row').append(cardHtml(val));
+	    		$('#principal_load').hide();
 	    	});
 	    });
 	    
@@ -170,6 +181,8 @@
 
 	function modalDescription(id){
 		console.log(id);
+		$('#modal_load').show();
+		$('#modal_card').hide();
 		$('#text_desc').empty();
 		$('#quantity').val(1);
 		conectionApi().done(function(res_data){
@@ -187,6 +200,8 @@
 			$('#text_desc').append('<p>'+allIngredients(result)+'</p>');
 			$('#text_desc').append('<br>INSTRUCTIONS');
 			$('#text_desc').append('<p>'+result.strInstructions+'</p>');
+			$('#modal_load').hide();
+			$('#modal_card').show();
 			//console.log(result.strInstructions);
 
 		});
