@@ -56,6 +56,34 @@
 				</div>-->
 			</div>
 		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="staticBackdropLabel"></h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		      		<div class="card">
+					  <img id="img_desc" src="" class="card-img-top">
+					  <div class="card-body">
+					    <h5 id="title_desc" class="card-title"></h5>
+					    <div id="text_desc" class="card-text"></div>
+					    <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+					  </div>
+					</div>
+		      </div>
+		      <div class="modal-footer">
+		      	<label for="quantity">How many you want?</label>
+				<input type="number" id="quantity" name="quantity" min="1" max="25">
+		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+		        <button type="button" class="btn btn-success">Add to card</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 	
 	</div>
 </body>
@@ -101,13 +129,44 @@
 						'<div class="card-footer">'+
 							'<button type="button" class="btn btn-danger btn-sm">'+obj.strAlcoholic+'</button>'+
 							'<button type="button" class="btn btn-success btn-sm">'+obj.strCategory+'</button>'+
-							'<button type="button" class="btn btn-primary btn-sm float-end">View</button>'+
+							'<button type="button" class="btn btn-primary btn-sm float-end" onClick="modalDescription('+"'"+obj.idDrink+"'"+')" data-bs-toggle="modal" data-bs-target="#staticBackdrop">View</button>'+
 						'</div>'+
 					'</div>'+	
 				'</div>';
 	}
 
+	function modalDescription(id){
+		console.log(id);
+		$('#text_desc').empty();
+		$('#quantity').val(1);
+		conectionApi().done(function(res_data){
+			var result = res_data.drinks.filter(function(val){
+				console.log(val.idDrink);
+				return val.idDrink == id;
+			});
+			console.log('------------------------------------------------------');
+			console.log(result);
+			result = result[0];
+			$("#img_desc").attr("src",result.strDrinkThumb);
+			$('#staticBackdropLabel').text(result.strDrink);
+			$('#text_desc').append('INGREDIENTS');
+			$('#text_desc').append('<p>'+allIngredients(result)+'</p>');
+			$('#text_desc').append('<br>INSTRUCTIONS');
+			$('#text_desc').append('<p>'+result.strInstructions+'</p>');
+			//console.log(result.strInstructions);
 
+		});
+
+	}
+
+	function allIngredients(obj){
+		var str = '';
+		for (var i = 1; i <= 10; i++) {
+			if(obj['strIngredient'+i]) str =  str + obj['strIngredient'+i] +'. ';
+		}
+
+		return str;
+	}
 
 </script>
 </html>
