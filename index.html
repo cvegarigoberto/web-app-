@@ -9,11 +9,11 @@
 <body>
 	<div class="container-fluid">
 		
-		<nav class="navbar navbar-light bg-light fixed-top">
+		<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
 		  <div class="container-fluid">
-		    <a class="navbar-brand" href="#">
+		    <a class="navbar-brand" href="#" id="brand">
 		      <img src="images/focus_image.jpg" alt="" width="30" height="24" class="d-inline-block align-text-top">
-		      Focus
+		      FOCUS
 		    </a>
 		    <form class="d-flex">
 		        
@@ -95,16 +95,16 @@
 		  </div>
 		</div>
 
-		<div class="toast-container fixed-top"> 
-				<div id="confirmation_t" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-				  <div class="toast-header">
-				    <strong class="me-auto">Good Job</strong>
-				    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-				  </div>
-				  <div class="toast-body">		    
-					successfully added
-				  </div>
-				</div>
+		<div class="toast-container fixed-bottom"> 
+			<div id="confirmation_t" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+			  <div class="toast-header">
+			    <strong class="me-auto">Good Job</strong>
+			    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			  </div>
+			  <div class="toast-body">		    
+				successfully added
+			  </div>
+			</div>
 		</div>
 		
 		<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
@@ -144,8 +144,9 @@
 	    	$.each(res_data.drinks, function(i, val){
 	    		console.log(val);
 	    		$('#principal_row').append(cardHtml(val));
-	    		$('#principal_load').hide();
+	    		
 	    	});
+	    	$('#principal_load').hide();
 	    });
 	    
 	});
@@ -171,8 +172,8 @@
 						    '<p class="card-text text-truncate">'+obj.strInstructions+'</p>'+
 						'</div>'+
 						'<div class="card-footer">'+
-							'<button type="button" class="btn btn-danger btn-sm">'+obj.strAlcoholic+'</button>'+
-							'<button type="button" class="btn btn-success btn-sm">'+obj.strCategory+'</button>'+
+							'<button type="button" class="btn btn-danger btn-sm" onClick="filterAlcoholic('+"'"+obj.strAlcoholic+"'"+')">'+obj.strAlcoholic+'</button>'+
+							'<button type="button" class="btn btn-success btn-sm" onClick="filterCategory('+"'"+obj.strCategory+"'"+')">'+obj.strCategory+'</button>'+
 							'<button type="button" class="btn btn-primary btn-sm float-end" onClick="modalDescription('+"'"+obj.idDrink+"'"+')" data-bs-toggle="modal" data-bs-target="#staticBackdrop">View</button>'+
 						'</div>'+
 					'</div>'+	
@@ -193,7 +194,7 @@
 			console.log('------------------------------------------------------');
 			console.log(result);
 			result = result[0];
-			$("#img_desc").attr("src",result.strDrinkThumb);
+			$('#img_desc').attr("src",result.strDrinkThumb);
 			$('#staticBackdropLabel').text(result.strDrink);
 			$('#title_desc').text(result.strDrink);
 			$('#text_desc').append('INGREDIENTS');
@@ -222,6 +223,47 @@
 
 		return str;
 	}
+
+	function filterAlcoholic(name){
+		$('#principal_load').show();
+		$('#principal_row').empty();
+	    conectionApi('').done(function(res_data){
+	    	$.each(res_data.drinks, function(i, val){
+	    		console.log(val);
+	    		if(val.strAlcoholic == name) $('#principal_row').append(cardHtml(val));
+	    		//$('#principal_load').hide();
+	    	});
+	    	$('#principal_load').hide();
+	    });
+		
+	}
+
+	function filterCategory(name){
+		$('#principal_load').show();
+		$('#principal_row').empty();
+	    conectionApi('').done(function(res_data){
+	    	$.each(res_data.drinks, function(i, val){
+	    		console.log(val);
+	    		if(val.strCategory == name) $('#principal_row').append(cardHtml(val));
+	    		//$('#principal_load').hide();
+	    	});
+	    	$('#principal_load').hide();
+	    });
+		
+	}
+
+	$('#brand').click(function(){
+		$('#principal_load').show();
+		$('#principal_row').empty();
+	    conectionApi('').done(function(res_data){
+	    	$.each(res_data.drinks, function(i, val){
+	    		console.log(val);
+	    		 $('#principal_row').append(cardHtml(val));
+	    		//$('#principal_load').hide();
+	    	});
+	    	$('#principal_load').hide();
+	    });
+	})
 
 	$('#add_card').click(function(){
 			$('.toast').toast('show');
